@@ -1,0 +1,77 @@
+<?xml version="1.0"?>
+<robot name="oasisbot_base" xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <xacro:macro name="oasisbot_base" params="uarm_base_x_offset uarm_base_z_offset">
+    <link name="base_link">
+      <visual>
+        <geometry>
+          <mesh filename="package://oasisbot_description/meshes/bracket.STL" scale="0.01 0.01 0.01"/>
+        </geometry>
+        <origin xyz = "0 0 0" rpy = "0 0 0"/>
+        <material name="white"/>
+      </visual>
+    </link>
+
+    <xacro:macro name="wheel" params="prefix suffix reflect_lr  reflect_fb offset">
+
+      <link name="${prefix}_${suffix}_wheel">
+        <visual>
+          <origin xyz="0.05 -0.06 -0.05" rpy="0 0 ${pi/2}" />
+          <geometry>
+            <mesh filename="package://oasisbot_description/meshes/wheel.STL" scale="0.001 0.001 0.001"/>
+          </geometry>
+          <material name="black"/>
+        </visual>
+      </link>
+      <joint name="${prefix}_${suffix}_wheel_joint" type="fixed">
+        <axis rpy="0 0 0" xyz="0 1 0"/>
+        <parent link="base_link"/>
+        <child link="${prefix}_${suffix}_wheel"/>
+        <origin rpy="0 0 0" xyz="${0.49*reflect_fb+offset} ${0.26*reflect_lr} -0.2"/>
+      </joint>
+
+    </xacro:macro>
+
+    <xacro:wheel prefix="right" suffix="front" reflect_lr="-1" reflect_fb="1" offset="-0.04"/>
+    <xacro:wheel prefix="left" suffix="front" reflect_lr="1" reflect_fb="1" offset="-0.04"/>
+    <xacro:wheel prefix="right" suffix="back" reflect_lr="-1" reflect_fb="-1" offset="0"/>
+    <xacro:wheel prefix="left" suffix="back" reflect_lr="1" reflect_fb="-1" offset="0"/>
+
+
+    <link name="uarm_base_x_link">
+      <visual>
+        <geometry>
+          <mesh filename="package://oasisbot_description/meshes/uarm_base_x.STL" scale="0.01 0.01 0.01"/>
+        </geometry>
+        <origin xyz = "0 0 0" rpy = "0 0 0"/>
+        <material name="white"/>
+      </visual>
+    </link>
+
+    <joint name="base_uarmbase_x_joint" type="fixed">
+      <axis rpy="0 0 0" xyz="0 1 0"/>
+      <parent link="base_link"/>
+      <child link="uarm_base_x_link"/>
+      <origin rpy="0 0 0" xyz="${-0.184+uarm_base_x_offset} 0 0.8"/>
+    </joint>
+
+    <link name="uarm_base_z_link">
+      <visual>
+        <geometry>
+          <mesh filename="package://oasisbot_description/meshes/uarm_base_z.STL" scale="0.01 0.01 0.01"/>
+        </geometry>
+        <origin xyz = "0 0 0" rpy = "0 0 0"/>
+        <material name="white"/>
+      </visual>
+    </link>
+
+    <joint name="base_uarmbase_z_joint" type="fixed">
+      <axis rpy="0 0 0" xyz="0 1 0"/>
+      <parent link="uarm_base_x_link"/>
+      <child link="uarm_base_z_link"/>
+      <origin rpy="0 0 0" xyz="0.04 0 -${uarm_base_z_offset}"/>
+    </joint>
+
+
+  </xacro:macro>
+</robot>

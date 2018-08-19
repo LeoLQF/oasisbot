@@ -1,0 +1,13 @@
+
+<launch>
+  <arg name="save_to_path"         default="/home/lqf/catkin_ws/src/oasisbot_cv/data/rgb_image/"/>
+  <arg name="img_source"           default="/camera/rgb/image_raw"/>
+
+  <include file="$(find astra_launch)/launch/astra.launch"></include>
+
+  <node pkg="oasisbot_cv" type="image_collection_from_image_stream.py" name="image_collection_from_image_stream" output="screen">
+    <param name="save_to_path"      value="$(arg save_to_path)"/>
+    <param name="img_source"        value="$(arg img_source)"/>
+  </node>
+
+</launch>

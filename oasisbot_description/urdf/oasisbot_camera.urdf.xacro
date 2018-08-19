@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<robot name="oasisbot_camera" xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <xacro:macro name="oasisbot_camera">
+    <link name="camera_base_link">
+      <visual>
+        <geometry>
+          <mesh filename="package://oasisbot_description/meshes/camera.STL" scale="0.001 0.001 0.001"/>
+        </geometry>
+        <origin xyz = "-0.031 -0.045 0.02 " rpy = "${pi} 0 ${pi/2}"/>
+        <material name="black"/>
+      </visual>
+    </link>
+
+  </xacro:macro>
+</robot>

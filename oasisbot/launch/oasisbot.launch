@@ -1,0 +1,13 @@
+<launch>
+  
+  <include file="$(find oasisbot_description)/launch/oasisbot_startup.launch"></include>
+
+  <include file="$(find astra_launch)/launch/astra.launch"></include>
+
+  <include file="$(find oasisbot_cv)/launch/oasisbot_cv.launch"></include>
+
+  <include file="$(find oasisbot_arm)/launch/oasisbot_arm.launch"></include>
+
+  <include file="$(find oasisbot_description)/launch/display.launch"></include>
+
+</launch>

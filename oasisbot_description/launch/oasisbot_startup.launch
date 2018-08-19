@@ -1,0 +1,25 @@
+<launch>
+
+  <arg name="model" default="$(find oasisbot_description)/urdf/oasisbot.urdf.xacro"/>
+  <arg name="gui" default="true" />
+  <arg name="pi/2" value="1.5707963267948966" />
+
+  <param name="robot_description" command="$(find xacro)/xacro --inorder $(arg model)" />
+  <!--
+  <param name="use_gui" value="$(arg gui)"/>
+  -->
+
+  <!-- http://wiki.ros.org/tf#static_transform_publisher
+  static_transform_publisher x y z yaw pitch roll frame_id child_frame_id period_in_ms
+  or
+  static_transform_publisher x y z qx qy qz qw frame_id child_frame_id  period_in_ms
+  1.34 -->
+  <node pkg="tf" type="static_transform_publisher" name="rgb_link_broadcaster" args="0 0 0 0 $(arg pi/2) 0 camera_base_link camera_link 100" />
+
+  <node name="oasisbot_arm_joint_publish_node" pkg="swiftpro" type="oasisbot_arm_joint_publish_node" />
+
+  <!--<node name="swiftpro_read_node" pkg="swiftpro" type="swiftpro_read_node" />-->
+
+   <!--<node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />-->
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" />
+</launch>

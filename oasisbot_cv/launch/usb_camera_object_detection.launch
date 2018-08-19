@@ -1,0 +1,26 @@
+
+<launch>
+  <arg name="tensorflow_object_detection_dir"    default="/home/lqf/catkin_ws/src/oasisbot_cv/script/object_detection"/>
+  <arg name="path_to_ckpt"                       default="./ssd_mobilenet_v1_coco_11_06_2017/frozen_inference_graph.pb"/>
+  <arg name="path_to_labels"                     default="./data/mscoco_label_map.pbtxt"/>
+  <arg name="name"                               default="object_detection" />
+  <arg name="input_rgb"                          default="/cv_camera/image_raw"/>
+  <arg name="draw_boxes_and_labels_on_image"     default="True"/>
+
+  <node pkg="cv_camera" type="cv_camera_node" name="cv_camera" output="screen">
+
+  </node>
+
+  <node pkg="oasisbot_cv" type="object_detection_objsBoxs.py" name="object_detection_objsBoxs" output="screen">
+    <param name="tensorflow_object_detection_dir" value="$(arg tensorflow_object_detection_dir)"/>
+    <param name="path_to_ckpt"                    value="$(arg path_to_ckpt)"/>
+    <param name="path_to_labels"                  value="$(arg path_to_labels)"/>
+    <param name="input_rgb"                       value="$(arg input_rgb)"/>
+    <param name="draw_boxes_and_labels_on_image"  value="$(arg draw_boxes_and_labels_on_image)" type="bool"/>
+  </node>
+
+  <node if="$(arg draw_boxes_and_labels_on_image)" pkg="rqt_image_view" type="rqt_image_view" name="$(arg name)_draw">
+    <param name="image_transport"                value="/visualize_boxes_and_labels_on_image"/>
+  </node>
+
+</launch>

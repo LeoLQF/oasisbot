@@ -1,0 +1,38 @@
+
+<launch>
+  <arg name="tensorflow_object_detection_dir"    default="/home/lqf/catkin_ws/src/oasisbot_cv/script/object_detection"/>
+  <arg name="path_to_ckpt"                       default="./oasisbot_object_detection/potted_plant/frozen_inference_graph.pb"/>
+  <arg name="path_to_labels"                     default="./oasisbot_object_detection/potted_plant/label_map.pbtxt"/>
+  <arg name="input_rgb"                          default="/camera/rgb/image_raw"/>
+  <arg name="min_score_thresh"                   default="0.5"/>
+  <arg name="input_depth"                        default="/camera/depth/image"/>
+  <arg name="draw_boxes_and_labels_on_image"     default="True"/>
+  <arg name="rviz"                               default="False"/>
+
+  <node pkg="oasisbot_cv" type="object_detection_objsBoxs.py" name="object_detection_objsBoxs" output="screen">
+    <param name="tensorflow_object_detection_dir" value="$(arg tensorflow_object_detection_dir)"/>
+    <param name="path_to_ckpt"                    value="$(arg path_to_ckpt)"/>
+    <param name="path_to_labels"                  value="$(arg path_to_labels)"/>
+    <param name="input_rgb"                       value="$(arg input_rgb)"/>
+    <param name="min_score_thresh"                value="$(arg min_score_thresh)" type="double"/>
+    <param name="draw_boxes_and_labels_on_image"  value="$(arg draw_boxes_and_labels_on_image)" type="bool"/>
+  </node>
+
+    <node pkg="oasisbot_cv" type="object_detection_objsPoints.py" name="object_detection_objsPoints" output="screen">
+    <param name="input_objsBoxs"                  value="/objsBoxes" />
+    <param name="input_depth"                     value="$(arg input_depth)" />
+  </node>
+
+  <node pkg="oasisbot_cv" type="objsPoints_manager.py" name="objsPoints_manager" output="screen">
+    <param name="input_objsPoints"                value="/objsPoints" />
+    <param name="target_spacing_restriction"      value="0.06"  type="double"/>
+  </node>
+  <!-- <node if="$(arg draw_boxes_and_labels_on_image)" pkg="rqt_image_view" type="rqt_image_view" name="objBoxs_draw">
+    <param name="image_transport"                 value="/visualize_boxes_and_labels_on_image"/>
+  </node> -->
+
+  <arg name="rvizconfig" default="$(find oasisbot_cv)/cfg/rviz.rviz" />
+  <node if="$(arg rviz)" name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" required="true" />
+
+
+</launch>

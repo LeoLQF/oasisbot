@@ -1,0 +1,6 @@
+<launch>
+
+  <node name="swiftpro_write_node" pkg="swiftpro" type="swiftpro_write_node" />
+  <node pkg="oasisbot_arm" type="objsPoints_to_armEnd.py" name="objsPoints_to_armEnd" output="screen" />
+
+</launch>

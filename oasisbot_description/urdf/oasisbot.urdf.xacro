@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<robot name="oasisbot" xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <!-- oasisbot_base -->
+    <xacro:include filename="$(find oasisbot_description)/urdf/oasisbot_color.urdf.xacro" />
+    <xacro:include filename="$(find oasisbot_description)/urdf/oasisbot_base.urdf.xacro" />
+    <xacro:include filename="$(find oasisbot_description)/urdf/oasisbot_camera.urdf.xacro" />
+    <xacro:include filename="$(find oasisbot_description)/urdf/oasisbot_arm.urdf.xacro" />
+
+    <xacro:oasisbot_base uarm_base_x_offset="0.188" uarm_base_z_offset="0.169"/>
+    <!-- <oasisbot_base/> -->
+    <oasisbot_arm/>
+    <oasisbot_camera/>
+
+    <joint name="$base_arm_joint" type="fixed">
+      <axis rpy="0 0 0" xyz="0 1 0"/>
+      <parent link="uarm_base_z_link"/>
+      <child link="Base"/>
+      <origin rpy="0 0 0" xyz="0.172 0 0.04"/>
+    </joint>
+
+    <joint name="$base_camera_joint" type="fixed">
+      <axis rpy="0 0 0" xyz="0 0 0"/>
+      <parent link="base_link"/>
+      <child link="camera_base_link"/>
+      <origin rpy="${pi/180*3} -${pi/180*1} 0" xyz="${0.48+0.05} 0.025 1.30"/>
+    </joint>
+
+</robot>
